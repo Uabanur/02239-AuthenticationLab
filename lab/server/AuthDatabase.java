@@ -9,7 +9,7 @@ import java.sql.Statement;
 public class AuthDatabase {
     private static Connection _connection;
 
-    public static Connection getConnection() throws SQLException, ClassNotFoundException{
+    public static Connection getConnection() throws SQLException{
         if(_connection != null && !_connection.isClosed()) return _connection;
 
         _connection = createInMemoryDatabase();
