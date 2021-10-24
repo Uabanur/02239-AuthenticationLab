@@ -11,8 +11,11 @@ public class ApplicationServer {
     public static void main(String[] args) throws RemoteException, SQLException{
 
         IUserAuthenticator auth = new UserAuthenticator();
-        System.out.println("Should be true: " + auth.checkEncryptedPassword("roar", "OOL4fpi5DUESGgVvxNtDYNBsd4Pq0hmRXmr0zoPYNE5vH8Tw06d39eoamcVtF1qK"));
-        System.out.println("Should be false: " + auth.checkEncryptedPassword("roar", "wrong password"));
+        System.out.println("Should be true: " + auth.checkEncryptedPassword("nicu", "test123"));
+        System.out.println("Should be false: " + auth.checkEncryptedPassword("nicu", "test124"));
+        System.out.println("Should be true: " + auth.checkEncryptedPassword("roar", "roar_pass"));
+        System.out.println("Should be false: " + auth.checkEncryptedPassword("roar", "filip_pass"));
+
         System.out.println();
 
         Printer service = new Printer();

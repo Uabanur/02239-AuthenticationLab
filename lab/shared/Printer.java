@@ -2,11 +2,18 @@ package shared;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
 
 public class Printer extends UnicastRemoteObject implements IPrinter{
+    HashMap<String, Token> tokenMap = new HashMap<>();
 
     public Printer() throws RemoteException {
         super();
+    }
+
+    public boolean loginUser(String username, String hash) throws RemoteException {
+//        if (PasswordHash.)
+        return true;
     }
 
     public void print(String filename, String printer) throws RemoteException {
