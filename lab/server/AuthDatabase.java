@@ -45,31 +45,6 @@ public class AuthDatabase {
             stm.setBytes(3, salt);
             stm.executeUpdate();
         }
-
-        // stm.setString(1, "nicu");
-        // byte[] salt = new byte[512];
-        // RANDOM.nextBytes(salt);
-        // stm.setBytes(2, PasswordHash.hashPassword("test123".toCharArray(), salt));
-        // stm.setBytes(3, salt);
-        // stm.executeUpdate();
-
-        // stm.setString(1, "alex");
-        // RANDOM.nextBytes(salt);
-        // stm.setBytes(2, PasswordHash.hashPassword("alex_pass".toCharArray(), salt));
-        // stm.setBytes(3, salt);
-        // stm.executeUpdate();
-
-        // stm.setString(1, "filip");
-        // RANDOM.nextBytes(salt);
-        // stm.setBytes(2, PasswordHash.hashPassword("filip_pass".toCharArray(), salt));
-        // stm.setBytes(3, salt);
-        // stm.executeUpdate();
-
-        // stm.setString(1, "roar");
-        // RANDOM.nextBytes(salt);
-        // stm.setBytes(2, PasswordHash.hashPassword("roar_pass".toCharArray(), salt));
-        // stm.setBytes(3, salt);
-        // stm.executeUpdate();
     }
 
     private static void printTestData(Connection con) throws SQLException {
