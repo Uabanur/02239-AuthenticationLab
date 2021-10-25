@@ -1,7 +1,5 @@
 package server;
 
-import shared.PasswordHash;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +13,7 @@ public class UserAuthenticator implements IUserAuthenticator{
         _connection = AuthDatabase.getConnection();
     }
 
-    public boolean checkEncryptedPassword(String username, String encryptedPassword) throws SQLException{
+    public boolean verifyPassword(String username, String password) throws SQLException{
         if(_connection == null) connect();
 
         String query = "select salt,password from users where username = ?";
@@ -27,6 +25,6 @@ public class UserAuthenticator implements IUserAuthenticator{
         byte[] salt = result.getBytes("salt");
         byte[] dbEncryptedPassword = result.getBytes("password");
 
-        return Arrays.equals(PasswordHash.hashPassword(encryptedPassword.toCharArray(), salt), dbEncryptedPassword);
+        return Arrays.equals(PasswordHash.hashPassword(password.toCharArray(), salt), dbEncryptedPassword);
     }
 }

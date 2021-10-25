@@ -11,14 +11,14 @@ public class ApplicationServer {
     public static void main(String[] args) throws RemoteException, SQLException{
 
         IUserAuthenticator auth = new UserAuthenticator();
-        System.out.println("Should be true: " + auth.checkEncryptedPassword("nicu", "test123"));
-        System.out.println("Should be false: " + auth.checkEncryptedPassword("nicu", "test124"));
-        System.out.println("Should be true: " + auth.checkEncryptedPassword("roar", "roar_pass"));
-        System.out.println("Should be false: " + auth.checkEncryptedPassword("roar", "filip_pass"));
+        System.out.println("Should be true: " + auth.verifyPassword("nicu", "test123"));
+        System.out.println("Should be false: " + auth.verifyPassword("nicu", "test124"));
+        System.out.println("Should be true: " + auth.verifyPassword("roar", "roar_pass"));
+        System.out.println("Should be false: " + auth.verifyPassword("roar", "filip_pass"));
 
         System.out.println();
 
-        Printer service = new Printer();
+        Printer service = new Printer(auth);
         System.out.println("Creating registry for port: " + Config.SERVER_PORT);
         Registry registry = LocateRegistry.createRegistry(Config.SERVER_PORT);
         System.out.println("rebinding service to name: " + Config.SERVICE_NAME);
