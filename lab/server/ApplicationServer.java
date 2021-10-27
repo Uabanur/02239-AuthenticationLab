@@ -1,13 +1,10 @@
 package server;
 
 import java.rmi.AccessException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.sql.SQLException;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -34,7 +31,6 @@ public class ApplicationServer {
         };
 
         for(var service : services) BindService(registry, service);
-
 
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(SessionManager::clearExpired, 15, 15, TimeUnit.MINUTES);

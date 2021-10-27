@@ -1,10 +1,11 @@
-package shared;
+package server;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
 
-import server.SessionManager;
+import shared.AuthenticationFailedException;
+import shared.IPrinter;
 
 public class Printer extends UnicastRemoteObject implements IPrinter{
     public String ServiceRouteName() { return "printer"; }

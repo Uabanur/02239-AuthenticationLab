@@ -14,6 +14,7 @@ public class SessionManager {
     }
 
     public static synchronized boolean validateSessionToken(UUID token){
+        if(token == null) return false;
         SessionToken sessionToken = _sessions.get(token);
         if (sessionToken == null) return false;
         return isValidToken(sessionToken);
