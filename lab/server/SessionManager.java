@@ -16,6 +16,18 @@ public class SessionManager {
     public static synchronized boolean validateSessionToken(UUID token){
         SessionToken sessionToken = _sessions.get(token);
         if (sessionToken == null) return false;
-        return sessionToken.StartTime.isAfter(LocalDateTime.now().minusHours(timeoutHours));
+        return isValidToken(sessionToken);
+    }
+
+    public static void clearExpired() {
+        _sessions.entrySet().removeIf(entry -> !isValidToken(entry.getValue()));
+    }
+
+    public static boolean isValidToken(SessionToken token) {
+        return token.StartTime.isAfter(LocalDateTime.now().minusHours(timeoutHours));
+    }
+
+    public static ConcurrentHashMap<UUID, SessionToken> get_sessions() {
+        return _sessions;
     }
 }
