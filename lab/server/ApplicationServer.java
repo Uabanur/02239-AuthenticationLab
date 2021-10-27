@@ -1,5 +1,7 @@
 package server;
 
+import java.rmi.AccessException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -17,11 +19,22 @@ public class ApplicationServer {
         System.out.println("Should be false: " + auth.verifyPassword("roar", "filip_pass"));
 
         System.out.println();
-
-        Printer service = new Printer(auth);
+        
         System.out.println("Creating registry for port: " + Config.SERVER_PORT);
         Registry registry = LocateRegistry.createRegistry(Config.SERVER_PORT);
-        System.out.println("rebinding service to name: " + Config.SERVICE_NAME);
-        registry.rebind(Config.SERVICE_NAME, service);
+
+        var services = new IRemoteService[]{
+            new Printer(),
+            new SessionProvider(auth),
+        };
+
+        for(var service : services) BindService(registry, service);
+    }
+
+    private static <T extends IRemoteService> void BindService(Registry registry, T service) 
+    throws RemoteException, AccessException {
+        var serviceRouteName = service.ServiceRouteName();
+        System.out.println("rebinding service to name: " + serviceRouteName);
+        registry.rebind(serviceRouteName, service);
     }
 }

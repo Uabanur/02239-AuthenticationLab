@@ -1,6 +1,9 @@
 package client;
 
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -10,9 +13,10 @@ import shared.*;
 public class User {
     public static void main(String[] args) {
         try{
-            String path = "rmi://localhost:"+Config.SERVER_PORT+"/"+Config.SERVICE_NAME;
-            IPrinter printer = (IPrinter) Naming.lookup(path);
-            usePrinter(printer);
+            var sessionProvider = (ISessionProvider) getService("session");
+            var token = sessionProvider.createSession("roar", "roar_pass");
+            var printer = (IPrinter) getService("printer");
+            usePrinter(printer, token);
         } catch (RemoteException e){
             System.err.println("Remote exception:");
             e.printStackTrace();
@@ -28,10 +32,14 @@ public class User {
         }
     }
 
-    private static void usePrinter(IPrinter printer) 
+    public static Remote getService(String serviceName) 
+    throws MalformedURLException, RemoteException, NotBoundException {
+        String path = "rmi://localhost:" + Config.SERVER_PORT + "/" + serviceName;
+        return Naming.lookup(path);
+    }
+
+    private static void usePrinter(IPrinter printer, UUID sessionToken) 
     throws RemoteException, AuthenticationFailedException, SQLException {
-        UUID sessionToken = printer.createSession("roar", "roar_pass");
-        sessionToken = UUID.randomUUID();
         printer.print("my file", "best printer", sessionToken);
         printer.queue("printer", sessionToken);
         printer.topQueue("printer", 0, sessionToken);

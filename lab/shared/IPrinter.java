@@ -2,20 +2,11 @@ package shared;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.sql.SQLException;
 import java.util.UUID;
 
-public interface IPrinter extends Remote {
+import server.IRemoteService;
 
-    /**
-     * Creates a limited authentication session token for the user.
-     * @return Session token.
-     * @throws RemoteException
-     * @throws AuthenticationFailedException if username/password pair is invalid.
-     * @throws SQLException
-     */
-    public UUID createSession(String username, String password) throws RemoteException, AuthenticationFailedException, SQLException;
-
+public interface IPrinter extends IRemoteService {
     /**
      * Prints file filename on the specified printer
      * @param filename

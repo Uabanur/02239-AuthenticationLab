@@ -2,29 +2,20 @@ package shared;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.sql.SQLException;
 import java.util.UUID;
 
-import server.IUserAuthenticator;
 import server.SessionManager;
 
 public class Printer extends UnicastRemoteObject implements IPrinter{
-    private IUserAuthenticator _auth;
+    public String ServiceRouteName() { return "printer"; }
 
-    public Printer(IUserAuthenticator auth) throws RemoteException {
+    public Printer() throws RemoteException {
         super();
-        this._auth = auth;
     }
 
     private void validateSessionOrThrow(UUID sessionToken) {
         if(!SessionManager.validateSessionToken(sessionToken)) 
             throw new AuthenticationFailedException("Session expired");
-    }
-    
-    public UUID createSession(String username, String password) 
-    throws RemoteException, AuthenticationFailedException, SQLException {
-        if(!_auth.verifyPassword(username, password)) throw new AuthenticationFailedException("Failed to authenticate. Please try again.");
-        return SessionManager.createSession(username);
     }
 
     public void print(String filename, String printer, UUID sessionToken)
