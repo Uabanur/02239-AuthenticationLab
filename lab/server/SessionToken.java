@@ -13,4 +13,5 @@ public class SessionToken {
         this.User = user;
         this.StartTime = LocalDateTime.now();
     }
+
 }

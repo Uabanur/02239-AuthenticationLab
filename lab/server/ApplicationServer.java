@@ -4,6 +4,11 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.sql.SQLException;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import shared.*;
 
@@ -23,5 +28,10 @@ public class ApplicationServer {
         Registry registry = LocateRegistry.createRegistry(Config.SERVER_PORT);
         System.out.println("rebinding service to name: " + Config.SERVICE_NAME);
         registry.rebind(Config.SERVICE_NAME, service);
+
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(SessionManager::clearExpired, 15, 15, TimeUnit.MINUTES);
+
+
     }
 }
