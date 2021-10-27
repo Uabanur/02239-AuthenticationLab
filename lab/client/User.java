@@ -3,6 +3,7 @@ package client;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.UUID;
 
 import shared.*;
 
@@ -29,7 +30,8 @@ public class User {
 
     private static void usePrinter(IPrinter printer) 
     throws RemoteException, AuthenticationFailedException, SQLException {
-        byte[] sessionToken = printer.createSession("roar", "roar_pass");
+        UUID sessionToken = printer.createSession("roar", "roar_pass");
+        sessionToken = UUID.randomUUID();
         printer.print("my file", "best printer", sessionToken);
         printer.queue("printer", sessionToken);
         printer.topQueue("printer", 0, sessionToken);

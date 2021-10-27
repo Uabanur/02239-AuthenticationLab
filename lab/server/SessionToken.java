@@ -1,13 +1,14 @@
 package server;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class SessionToken {
-    public byte[] Content;
+    public UUID Content;
     public String User;
     public LocalDateTime StartTime;
 
-    public SessionToken(byte[] content, String user){
+    public SessionToken(UUID content, String user){
         this.Content = content;
         this.User = user;
         this.StartTime = LocalDateTime.now();

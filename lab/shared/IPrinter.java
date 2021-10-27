@@ -3,6 +3,7 @@ package shared;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public interface IPrinter extends Remote {
 
@@ -13,7 +14,7 @@ public interface IPrinter extends Remote {
      * @throws AuthenticationFailedException if username/password pair is invalid.
      * @throws SQLException
      */
-    public byte[] createSession(String username, String password) throws RemoteException, AuthenticationFailedException, SQLException;
+    public UUID createSession(String username, String password) throws RemoteException, AuthenticationFailedException, SQLException;
 
     /**
      * Prints file filename on the specified printer
@@ -23,7 +24,7 @@ public interface IPrinter extends Remote {
      * @throws RemoteException
      * @throws AuthenticationFailedException
      */
-    public void print(String filename, String printer, byte[] sessionToken) throws RemoteException, AuthenticationFailedException;   
+    public void print(String filename, String printer, UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
 
     /**
      * Lists the print queue for a given printer on the user's display in lines of the form <job number>   <file name>
@@ -33,7 +34,7 @@ public interface IPrinter extends Remote {
      * @throws RemoteException
      * @throws AuthenticationFailedException
      */
-    public String[] queue(String printer, byte[] sessionToken) throws RemoteException, AuthenticationFailedException;  
+    public String[] queue(String printer, UUID sessionToken) throws RemoteException, AuthenticationFailedException;  
 
     /** 
      * Moves job to the top of the queue
@@ -43,7 +44,7 @@ public interface IPrinter extends Remote {
      * @throws RemoteException
      * @throws AuthenticationFailedException
      */
-    public void topQueue(String printer, int job, byte[] sessionToken) throws RemoteException, AuthenticationFailedException;   
+    public void topQueue(String printer, int job, UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
 
     /** 
      * Starts the print server
@@ -51,7 +52,7 @@ public interface IPrinter extends Remote {
      * @throws RemoteException
      * @throws AuthenticationFailedException
      */
-    public void start(byte[] sessionToken) throws RemoteException, AuthenticationFailedException;   
+    public void start(UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
 
     /** 
      * Stops the print server
@@ -59,7 +60,7 @@ public interface IPrinter extends Remote {
      * @throws RemoteException
      * @throws AuthenticationFailedException
      */
-    public void stop(byte[] sessionToken) throws RemoteException, AuthenticationFailedException;   
+    public void stop(UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
 
     /** 
      * Stops the print server, clears the print queue and starts the print server again
@@ -67,7 +68,7 @@ public interface IPrinter extends Remote {
      * @throws RemoteException
      * @throws AuthenticationFailedException
      */
-    public void restart(byte[] sessionToken) throws RemoteException, AuthenticationFailedException;   
+    public void restart(UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
 
     /** 
      * Prints status of printer on the user's display
@@ -77,7 +78,7 @@ public interface IPrinter extends Remote {
      * @throws RemoteException
      * @throws AuthenticationFailedException
      */
-    public String status(String printer, byte[] sessionToken) throws RemoteException, AuthenticationFailedException;  
+    public String status(String printer, UUID sessionToken) throws RemoteException, AuthenticationFailedException;  
 
     /** 
      * Prints the value of the parameter on the user's display
@@ -87,7 +88,7 @@ public interface IPrinter extends Remote {
      * @throws RemoteException
      * @throws AuthenticationFailedException
      */
-    public String readConfig(String parameter, byte[] sessionToken) throws RemoteException, AuthenticationFailedException;   
+    public String readConfig(String parameter, UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
 
     /** 
      * Sets the parameter to value
@@ -97,5 +98,5 @@ public interface IPrinter extends Remote {
      * @throws RemoteException
      * @throws AuthenticationFailedException
      */
-    public void setConfig(String parameter, String value, byte[] sessionToken) throws RemoteException, AuthenticationFailedException;   
+    public void setConfig(String parameter, String value, UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
 }
