@@ -27,8 +27,4 @@ public class SessionManager {
     public static boolean isValidToken(SessionToken token) {
         return token.StartTime.isAfter(LocalDateTime.now().minusHours(timeoutHours));
     }
-
-    public static ConcurrentHashMap<UUID, SessionToken> get_sessions() {
-        return _sessions;
-    }
 }

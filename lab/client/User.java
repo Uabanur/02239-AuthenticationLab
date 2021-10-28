@@ -6,27 +6,31 @@ import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.Scanner;
 import java.util.UUID;
 
 import shared.*;
 
 public class User {
     public static void main(String[] args) {
-        try{
+        try {
             var sessionProvider = (ISessionProvider) getService("session");
-            var token = sessionProvider.createSession("roar", "roar_pass");
+            Scanner in = new Scanner(System.in);
+            System.out.println("Introduce the username and the password:");
+            String username = in.next(), password = in.next();
+            var token = sessionProvider.createSession(username, password);
             var printer = (IPrinter) getService("printer");
             usePrinter(printer, token);
-        } catch (RemoteException e){
+        } catch (RemoteException e) {
             System.err.println("Remote exception:");
             e.printStackTrace();
-        } catch(AuthenticationFailedException e){
+        } catch(AuthenticationFailedException e) {
             System.err.println("Authentication exception:");
             e.printStackTrace();
-        } catch(SQLException e){
+        } catch(SQLException e) {
             System.err.println("SQL exception:");
             e.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Critical error:");
             e.printStackTrace();
         }
