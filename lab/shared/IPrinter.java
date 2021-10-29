@@ -14,7 +14,7 @@ public interface IPrinter extends IRemoteService {
      * @throws RemoteException
      * @throws AuthenticationFailedException
      */
-    public void print(String filename, String printer, UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
+    public boolean print(String filename, String printer, UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
 
     /**
      * Lists the print queue for a given printer on the user's display in lines of the form <job number>   <file name>
@@ -34,7 +34,7 @@ public interface IPrinter extends IRemoteService {
      * @throws RemoteException
      * @throws AuthenticationFailedException
      */
-    public void topQueue(String printer, int job, UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
+    public boolean topQueue(String printer, int job, UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
 
     /** 
      * Starts the print server
@@ -42,7 +42,7 @@ public interface IPrinter extends IRemoteService {
      * @throws RemoteException
      * @throws AuthenticationFailedException
      */
-    public void start(UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
+    public boolean start(UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
 
     /** 
      * Stops the print server
@@ -50,7 +50,7 @@ public interface IPrinter extends IRemoteService {
      * @throws RemoteException
      * @throws AuthenticationFailedException
      */
-    public void stop(UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
+    public boolean stop(UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
 
     /** 
      * Stops the print server, clears the print queue and starts the print server again
@@ -58,7 +58,7 @@ public interface IPrinter extends IRemoteService {
      * @throws RemoteException
      * @throws AuthenticationFailedException
      */
-    public void restart(UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
+    public boolean restart(UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
 
     /** 
      * Prints status of printer on the user's display
@@ -88,5 +88,5 @@ public interface IPrinter extends IRemoteService {
      * @throws RemoteException
      * @throws AuthenticationFailedException
      */
-    public void setConfig(String parameter, String value, UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
+    public boolean setConfig(String parameter, String value, UUID sessionToken) throws RemoteException, AuthenticationFailedException;   
 }

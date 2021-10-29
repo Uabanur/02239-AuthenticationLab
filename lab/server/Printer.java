@@ -19,60 +19,66 @@ public class Printer extends UnicastRemoteObject implements IPrinter{
             throw new AuthenticationFailedException("Session expired");
     }
 
-    public void print(String filename, String printer, UUID sessionToken)
+    public boolean print(String filename, String printer, UUID sessionToken)
     throws RemoteException, AuthenticationFailedException {
         validateSessionOrThrow(sessionToken);
         System.out.println("print: " + filename + " - " + printer);
+        return true;
     }
 
     public String[] queue(String printer, UUID sessionToken)
     throws RemoteException, AuthenticationFailedException {
         validateSessionOrThrow(sessionToken);
         System.out.println("queue: " + printer);
-        return null;
+        return new String[]{};
     }
 
-    public void topQueue(String printer, int job, UUID sessionToken)
+    public boolean topQueue(String printer, int job, UUID sessionToken)
     throws RemoteException, AuthenticationFailedException {
         validateSessionOrThrow(sessionToken);
         System.out.println("topQueue: " + printer + " - " + job);
+        return true;
     }
 
-    public void start(UUID sessionToken)
+    public boolean start(UUID sessionToken)
     throws RemoteException, AuthenticationFailedException {
         validateSessionOrThrow(sessionToken);
         System.out.println("start printer");
+        return true;
     }
 
-    public void stop(UUID sessionToken)
+    public boolean stop(UUID sessionToken)
     throws RemoteException, AuthenticationFailedException {
         validateSessionOrThrow(sessionToken);
         System.out.println("stop printer");
+        return true;
     }
 
-    public void restart(UUID sessionToken)
+    public boolean restart(UUID sessionToken)
     throws RemoteException, AuthenticationFailedException {
         validateSessionOrThrow(sessionToken);
         System.out.println("restart printer");
+        return true;
     }
 
     public String status(String printer, UUID sessionToken)
     throws RemoteException, AuthenticationFailedException {
         validateSessionOrThrow(sessionToken);
         System.out.println("status: " + printer);
-        return null;
+        return "ready";
     }
 
     public String readConfig(String parameter, UUID sessionToken)
     throws RemoteException, AuthenticationFailedException {
         validateSessionOrThrow(sessionToken);
         System.out.println("readConfig: " + parameter);
-        return null;
+        return "configs";
     }
 
-    public void setConfig(String parameter, String value, UUID sessionToken)
+    public boolean setConfig(String parameter, String value, UUID sessionToken)
     throws RemoteException, AuthenticationFailedException {
         validateSessionOrThrow(sessionToken);
         System.out.println("setConfig: " + parameter + " - " + value);
+        return true;
     }
 }

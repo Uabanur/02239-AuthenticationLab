@@ -19,7 +19,7 @@ public class SessionProvider
         this._auth = auth;
     }
 
-    public UUID createSession(String username, String password) throws SQLException {
+    public UUID createSession(String username, String password) throws SQLException, AuthenticationFailedException {
         if(!_auth.verifyPassword(username, password)) throw new AuthenticationFailedException("Failed to authenticate. Please try again.");
         return SessionManager.createSession(username);
     }

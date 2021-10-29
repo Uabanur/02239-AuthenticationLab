@@ -8,31 +8,20 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 
 import shared.*;
 
 public class User {
     public static void main(String[] args) {
         try {
-            var sessionProvider = (ISessionProvider) getService("session");
-            Scanner in = new Scanner(System.in);
-            System.out.println("Introduce the username and the password:");
-            String username = in.next(), password = in.next();
-            var token = sessionProvider.createSession(username, password);
+            var token = getSession();
             var printer = (IPrinter) getService("printer");
             usePrinter(printer, token);
-        } catch (RemoteException e) {
-            System.err.println("Remote exception:");
-            e.printStackTrace();
         } catch(AuthenticationFailedException e) {
-            System.err.println("Authentication exception:");
-            e.printStackTrace();
-        } catch(SQLException e) {
-            System.err.println("SQL exception:");
-            e.printStackTrace();
+            FailMessage("Authentication erorr: " + e.getMessage());
         } catch (Exception e) {
-            System.err.println("Critical error:");
-            e.printStackTrace();
+            FailMessage("An error has occured. Contact your administrator.");
         }
     }
 
@@ -42,16 +31,45 @@ public class User {
         return Naming.lookup(path);
     }
 
-    private static void usePrinter(IPrinter printer, UUID sessionToken) 
-    throws RemoteException, AuthenticationFailedException, SQLException {
-        printer.print("my file", "best printer", sessionToken);
-        printer.queue("printer", sessionToken);
-        printer.topQueue("printer", 0, sessionToken);
-        printer.start(sessionToken);
-        printer.stop(sessionToken);
-        printer.restart(sessionToken);
-        printer.status("printer", sessionToken);
-        printer.readConfig("parameter", sessionToken);
-        printer.setConfig("parameter", "value", sessionToken);
+    private static UUID getSession() throws SQLException, MalformedURLException, NotBoundException, RemoteException{
+        Scanner in = new Scanner(System.in);
+        System.out.println("Login to use print server");
+        System.out.println("Username:");
+        String username = in.next();
+        System.out.println("Password:");
+        String password = in.next();
+        in.close();
+
+        var sessionProvider = (ISessionProvider) getService("session");
+        var token = sessionProvider.createSession(username, password);
+        return token;
     }
+
+    private static void usePrinter(IPrinter printer, UUID sessionToken) {
+        LogOperation("print", () -> printer.print("authentication_lab.pdf", "best printer", sessionToken));
+        LogOperation("queue", () -> printer.queue("printer", sessionToken));
+        LogOperation("topQueue", () -> printer.topQueue("printer", 0, sessionToken));
+        LogOperation("start", () -> printer.start(sessionToken));
+        LogOperation("stop", () -> printer.stop(sessionToken));
+        LogOperation("restart", () -> printer.restart(sessionToken));
+        LogOperation("status", () -> printer.status("printer", sessionToken));
+        LogOperation("readConfig", () -> printer.readConfig("parameter", sessionToken));
+        LogOperation("setConfig", () -> printer.setConfig("parameter", "value", sessionToken));
+    }
+
+    private static <T> void LogOperation(String operation, Callable<T> op) {
+        try{
+            System.out.println("Calling operation: " + operation);
+            op.call();
+            SuccessMessage("Operation finished");
+        } catch(AuthenticationFailedException e) {
+            FailMessage("Authentication error: " + e.getMessage());
+        } catch (Exception e) {
+            FailMessage("An error has occured. Contact your administrator.");
+        }
+    }
+
+    //color coded status messages for user actions
+    private static void SuccessMessage(String msg) {System.out.println("\033[0;32m" + msg + "\033[0m");}
+    private static void FailMessage(String msg) {System.out.println("\033[0;31m" + msg + "\033[0m");}
 }
